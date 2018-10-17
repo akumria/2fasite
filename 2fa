@@ -1,0 +1,23 @@
+#!/bin/sh
+
+TWOFASITE=$1
+BASE=$HOME/.config/2fa
+
+if [ -z "$TWOFASITE" ]; then
+    echo "A TWOFA site is needed."
+    exit 1
+fi
+
+OATH=$BASE/$TWOFASITE.oath
+if [ ! -f "$OATH" ]; then
+    echo "Unable to find oath key for $TWOFASITE"
+    exit 1
+fi
+
+OPTS=$BASE/$TWOFASITE.options
+if [ ! -f "$OPTS" ]; then
+    echo "Unable to find oath options for $TWOFASITE"
+    exit 1
+fi
+
+oathtool "$(cat "$OPTS")" "$(cat "$OATH")"
