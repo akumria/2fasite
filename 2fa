@@ -3,7 +3,7 @@
 TWOFASITE=$1
 BASE=$HOME/.config/2fa
 
-if [ -z "$TWOFASITE" ]; then
+if [ -z "$TWOFASITE" -o "$TWOFASITE" = "help" ]; then
     echo "usage: 2fa site|list"
     echo ""
     echo "A TWOFA site is needed."
