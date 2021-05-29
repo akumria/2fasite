@@ -8,9 +8,10 @@ if [ -z "$TWOFASITE" -o "$TWOFASITE" = "help" ]; then
     echo ""
     echo "A TWOFA site is needed."
     echo ""
-    echo "usage: 2fa site:"
+    echo "usage: 2fa <site>"
     echo "	generate the 2 Factor for the site"
-    echo "usage: 2fa list:"
+    echo ""
+    echo "usage: 2fa list"
     echo "	list the sites known"
     exit 1
 fi
