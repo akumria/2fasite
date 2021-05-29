@@ -13,7 +13,27 @@ if [ -z "$TWOFASITE" -o "$TWOFASITE" = "help" ]; then
     echo ""
     echo "usage: 2fa list"
     echo "	list the sites known"
+    echo ""
+    echo "usage: 2fa create <sitename> [siteoptions]"
+    echo "	create a new site"
+    echo "	default siteoptions are \`--totp -b\`"
     exit 1
+fi
+
+if [ "$TWOFASITE" = "create" ]; then
+    NEWSITE=$2
+    OPTIONS=$3
+    if [ -z "$NEWSITE" ]; then
+        echo "A sitename is required."
+        exit 1
+    fi
+    if [ -z "$OPTIONS" ]; then
+        OPTIONS="--totp -b"
+    fi
+    read -p "enter the site code: " SITECODE
+    echo $SITECODE > $BASE/$NEWSITE.oath
+    echo $OPTIONS > $BASE/$NEWSITE.options
+    exit 0
 fi
 
 if [ "$TWOFASITE" = "list" ]; then
