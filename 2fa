@@ -21,6 +21,10 @@ if [ -z "$TWOFASITE" ] || [ "$TWOFASITE" = "help" ]; then
     echo "usage: 2fa create <sitename> [siteoptions]"
     echo "	create a new site"
     echo "	default siteoptions are \`--totp -b\`"
+    echo ""
+    echo "usage: 2fa qrcode <sitename>"
+    echo "	display the site details as a QR Code"
+    echo "	useful for scanning into handheld authenticators"
     exit 1
 fi
 
@@ -41,6 +45,25 @@ if [ "$TWOFASITE" = "create" ]; then
     IFS= read -r SITECODE
     echo "$SITECODE" > "$BASE"/"$NEWSITE".oath
     echo "$OPTIONS" > "$BASE"/"$NEWSITE".options
+    exit 0
+fi
+
+if [ "$TWOFASITE" = "qrcode" ]; then
+    NEWSITE=$2
+    if [ -z "$NEWSITE" ]; then
+        echo "A sitename is required."
+        exit 1
+    fi
+
+    QRENCODE=$(command -v qrencode)
+    if [ -z "$QRENCODE" ]; then
+        echo "qrencode not found. Unable to display 2FA as QR code."
+        exit 1
+    fi
+
+    OATH=$(cat $BASE/$NEWSITE.oath)
+    QRSTRING="otpauth://totp/$NEWSITE?secret=$OATH"
+    qrencode -t utf8i $QRSTRING
     exit 0
 fi
 
