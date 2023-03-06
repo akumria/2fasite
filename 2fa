@@ -34,6 +34,9 @@ if [ "$TWOFASITE" = "create" ]; then
     if [ -z "$OPTIONS" ]; then
         OPTIONS="--totp -b"
     fi
+    if [ ! -d "$BASE" ]; then
+        mkdir -p "$BASE"
+    fi
     print "enter the site code:"
     IFS= read -r SITECODE
     echo "$SITECODE" > "$BASE"/"$NEWSITE".oath
