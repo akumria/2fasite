@@ -3,7 +3,7 @@
 TWOFASITE=$1
 BASE=$HOME/.config/2fa
 
-if [ -z "$TWOFASITE" -o "$TWOFASITE" = "help" ]; then
+if [ -z "$TWOFASITE" ] || [ "$TWOFASITE" = "help" ]; then
     echo "usage: 2fa site|list"
     echo ""
     echo "A TWOFA site is needed."
@@ -30,9 +30,10 @@ if [ "$TWOFASITE" = "create" ]; then
     if [ -z "$OPTIONS" ]; then
         OPTIONS="--totp -b"
     fi
-    read -p "enter the site code: " SITECODE
-    echo $SITECODE > $BASE/$NEWSITE.oath
-    echo $OPTIONS > $BASE/$NEWSITE.options
+    print "enter the site code:"
+    IFS= read -r SITECODE
+    echo "$SITECODE" > "$BASE"/"$NEWSITE".oath
+    echo "$OPTIONS" > "$BASE"/"$NEWSITE".options
     exit 0
 fi
 
@@ -60,4 +61,5 @@ if [ ! -f "$OPTS" ]; then
     exit 1
 fi
 
-oathtool "$(cat "$OPTS")" "$(cat "$OATH")"
+# shellcheck disable=SC2046
+oathtool $(cat "$OPTS") $(cat "$OATH")
