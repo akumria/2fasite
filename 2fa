@@ -1,7 +1,11 @@
 #!/bin/sh
 
 TWOFASITE=$1
-BASE=$HOME/.config/2fa
+if [ -z "$TWOFA_BASE" ]; then
+    BASE="$HOME/.config/2fa"
+else
+    BASE="$TWOFA_BASE"
+fi
 
 if [ -z "$TWOFASITE" ] || [ "$TWOFASITE" = "help" ]; then
     echo "usage: 2fa site|list"
